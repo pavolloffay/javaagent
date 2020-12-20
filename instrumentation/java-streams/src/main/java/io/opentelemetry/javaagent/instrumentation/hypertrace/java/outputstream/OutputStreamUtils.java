@@ -17,6 +17,8 @@
 package io.opentelemetry.javaagent.instrumentation.hypertrace.java.outputstream;
 
 import io.opentelemetry.javaagent.instrumentation.api.CallDepthThreadLocalMap;
+import io.opentelemetry.javaagent.instrumentation.api.ContextStore;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import org.hypertrace.agent.core.GlobalObjectRegistry;
@@ -25,7 +27,10 @@ public class OutputStreamUtils {
 
   private OutputStreamUtils() {}
 
-  public static boolean check(OutputStream outputStream) {
+  public static boolean check(ContextStore<OutputStream, ByteArrayOutputStream> contextStore, OutputStream outputStream) {
+    System.out.println("checking outputstream in context store");
+    System.out.println(contextStore);
+    System.out.println(contextStore.get(outputStream));
     Object outStream = GlobalObjectRegistry.outputStreamToBufferMap.get(outputStream);
     if (outStream == null) {
       return false;

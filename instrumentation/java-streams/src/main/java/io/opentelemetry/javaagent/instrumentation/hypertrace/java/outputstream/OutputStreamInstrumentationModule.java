@@ -24,8 +24,11 @@ import static net.bytebuddy.matcher.ElementMatchers.takesArgument;
 import static net.bytebuddy.matcher.ElementMatchers.takesArguments;
 
 import com.google.auto.service.AutoService;
+import io.opentelemetry.javaagent.instrumentation.api.ContextStore;
+import io.opentelemetry.javaagent.instrumentation.api.InstrumentationContext;
 import io.opentelemetry.javaagent.tooling.InstrumentationModule;
 import io.opentelemetry.javaagent.tooling.TypeInstrumentation;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collections;
@@ -52,6 +55,13 @@ public class OutputStreamInstrumentationModule extends InstrumentationModule {
 
   public OutputStreamInstrumentationModule() {
     super("outputstream", "ht");
+  }
+
+  @Override
+  protected Map<String, String> contextStore() {
+    Map<String, String> context = new HashMap<>();
+    context.put("java.io.OutputStream", "java.io.ByteArrayOutputStream");
+    return context;
   }
 
   @Override
@@ -97,7 +107,9 @@ public class OutputStreamInstrumentationModule extends InstrumentationModule {
   static class OutputStream_WriteIntAdvice {
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static boolean enter(@Advice.This OutputStream thizz) {
-      return OutputStreamUtils.check(thizz);
+      ContextStore<OutputStream, ByteArrayOutputStream> context = InstrumentationContext
+          .get(OutputStream.class, ByteArrayOutputStream.class);
+      return OutputStreamUtils.check(context, thizz);
     }
 
     @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
@@ -113,7 +125,9 @@ public class OutputStreamInstrumentationModule extends InstrumentationModule {
   static class OutputStream_WriteByteArrAdvice {
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static boolean enter(@Advice.This OutputStream thizz) {
-      return OutputStreamUtils.check(thizz);
+      ContextStore<OutputStream, ByteArrayOutputStream> context = InstrumentationContext
+          .get(OutputStream.class, ByteArrayOutputStream.class);
+      return OutputStreamUtils.check(context, thizz);
     }
 
     @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
@@ -129,7 +143,9 @@ public class OutputStreamInstrumentationModule extends InstrumentationModule {
   static class OutputStream_WriteByteArrOffsetAdvice {
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static boolean enter(@Advice.This OutputStream thizz) {
-      return OutputStreamUtils.check(thizz);
+      ContextStore<OutputStream, ByteArrayOutputStream> context = InstrumentationContext
+          .get(OutputStream.class, ByteArrayOutputStream.class);
+      return OutputStreamUtils.check(context, thizz);
     }
 
     @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
