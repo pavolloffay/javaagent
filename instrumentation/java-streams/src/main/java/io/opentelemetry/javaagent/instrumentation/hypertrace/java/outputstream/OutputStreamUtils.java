@@ -28,9 +28,15 @@ public class OutputStreamUtils {
   private OutputStreamUtils() {}
 
   public static boolean check(ContextStore<OutputStream, ByteArrayOutputStream> contextStore, OutputStream outputStream) {
-    System.out.println("checking outputstream in context store");
-    System.out.println(contextStore);
-    System.out.println(contextStore.get(outputStream));
+    if (contextStore != null) {
+//      System.out.println("checking outputstream in context store");
+//      System.out.println(contextStore);
+      ByteArrayOutputStream byteArrayOutputStream = contextStore.get(outputStream);
+      if (byteArrayOutputStream != null) {
+        System.out.println("\n\n\n Byte array from input stream is not null\n\n\n");
+        System.out.println(byteArrayOutputStream);
+      }
+    }
     Object outStream = GlobalObjectRegistry.outputStreamToBufferMap.get(outputStream);
     if (outStream == null) {
       return false;

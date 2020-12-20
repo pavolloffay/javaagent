@@ -20,6 +20,7 @@ import static io.opentelemetry.javaagent.tooling.bytebuddy.matcher.AgentElementM
 import static net.bytebuddy.matcher.ElementMatchers.is;
 import static net.bytebuddy.matcher.ElementMatchers.isPublic;
 import static net.bytebuddy.matcher.ElementMatchers.named;
+import static net.bytebuddy.matcher.ElementMatchers.namedIgnoreCase;
 import static net.bytebuddy.matcher.ElementMatchers.takesArgument;
 import static net.bytebuddy.matcher.ElementMatchers.takesArguments;
 
@@ -60,8 +61,8 @@ public class OutputStreamInstrumentationModule extends InstrumentationModule {
   @Override
   protected Map<String, String> contextStore() {
     Map<String, String> context = new HashMap<>();
-    context.put("java.io.OutputStream", "java.io.ByteArrayOutputStream");
-    return context;
+    context.put("java.io.OutputStream", ByteArrayOutputStream.class.getName());
+    return Collections.unmodifiableMap(context);
   }
 
   @Override
@@ -107,9 +108,9 @@ public class OutputStreamInstrumentationModule extends InstrumentationModule {
   static class OutputStream_WriteIntAdvice {
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static boolean enter(@Advice.This OutputStream thizz) {
-      ContextStore<OutputStream, ByteArrayOutputStream> context = InstrumentationContext
-          .get(OutputStream.class, ByteArrayOutputStream.class);
-      return OutputStreamUtils.check(context, thizz);
+//      ContextStore<OutputStream, ByteArrayOutputStream> context = InstrumentationContext
+//          .get(OutputStream.class, ByteArrayOutputStream.class);
+      return OutputStreamUtils.check(null, thizz);
     }
 
     @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)
@@ -125,9 +126,9 @@ public class OutputStreamInstrumentationModule extends InstrumentationModule {
   static class OutputStream_WriteByteArrAdvice {
     @Advice.OnMethodEnter(suppress = Throwable.class)
     public static boolean enter(@Advice.This OutputStream thizz) {
-      ContextStore<OutputStream, ByteArrayOutputStream> context = InstrumentationContext
-          .get(OutputStream.class, ByteArrayOutputStream.class);
-      return OutputStreamUtils.check(context, thizz);
+//      ContextStore<OutputStream, ByteArrayOutputStream> context = InstrumentationContext
+//          .get(OutputStream.class, ByteArrayOutputStream.class);
+      return OutputStreamUtils.check(null, thizz);
     }
 
     @Advice.OnMethodExit(suppress = Throwable.class, onThrowable = Throwable.class)

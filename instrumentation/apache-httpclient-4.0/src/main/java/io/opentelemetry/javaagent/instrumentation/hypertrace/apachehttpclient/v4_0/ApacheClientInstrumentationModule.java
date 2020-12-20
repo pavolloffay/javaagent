@@ -284,9 +284,14 @@ public class ApacheClientInstrumentationModule extends InstrumentationModule {
           BoundedByteArrayOutputStreamFactory.create((int) contentSize);
 
 
-//      System.out.println("Apache getting context store\n\n");
-//      ContextStore<OutputStream, ByteArrayOutputStream> outputStreamByteArrayOutputStreamContextStore = InstrumentationContext
-//          .get(OutputStream.class, ByteArrayOutputStream.class);
+      System.out.println("Apache getting context store\n\n");
+      try {
+        ContextStore<OutputStream, ByteArrayOutputStream> outputStreamByteArrayOutputStreamContextStore = InstrumentationContext
+            .get(OutputStream.class, ByteArrayOutputStream.class);
+        System.out.println(outputStreamByteArrayOutputStreamContextStore);
+      } catch (Exception ex) {
+        System.out.println("Exception when getting the context");
+      }
 //      System.out.println("adding to context store");
 //      System.out.println(outputStreamByteArrayOutputStreamContextStore);
 //      outputStreamByteArrayOutputStreamContextStore.put(outputStream, byteArrayOutputStream);
