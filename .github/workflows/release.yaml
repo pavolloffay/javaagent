@@ -102,7 +102,7 @@ jobs:
            echo "releasing docker"
 #          echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
 #          DOCKER_TAG=${GITHUB_REF##*/} make docker docker-push
-        env:
+#        env:
 #          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_PUBLISH_USER }}
 #          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PUBLISH_TOKEN }}
 
